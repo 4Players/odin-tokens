@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES2015",
+        "module": "CommonJS",
+        "declaration": true,
+        "moduleResolution": "node",
+        "outDir": "./lib",
+        "strict": true,
+        "experimentalDecorators": true,
+    },
+    "include": ["src"],
+    "exclude": ["node_modules"]
+}

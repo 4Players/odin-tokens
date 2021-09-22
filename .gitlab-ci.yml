@@ -1,0 +1,31 @@
+image: $CI_REGISTRY/odin/builders/alpine:latest
+
+stages:
+  - test
+  - deploy
+
+before_script:
+  - npm ci
+
+cache:
+  key: "${CI_COMMIT_REF_SLUG}"
+  paths:
+    - node_modules/
+
+test:eslint:
+  stage: test
+  script:
+    - npm run lint
+
+test:testyts:
+  stage: test
+  script:
+    - npm run test
+
+publish:
+  stage: deploy
+  when: manual
+  script:
+    - npm run build
+    - echo '//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}' > .npmrc
+    - npm publish

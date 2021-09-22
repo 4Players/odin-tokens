@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target": "ES2015",
+        "module": "CommonJS",
+        "outDir": "./lib",
+        "strict": true,
+        "moduleResolution": "node"
+    },
+    "include": ["src"],
+    "exclude": ["node_modules"]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "example-token-server",
+  "version": "^0.0.4",
+  "scripts": {
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node lib/server.js"
+  },
+  "author": "Maximilian Münchow <maximilian.muenchow@4players.io> (https://www.4players.io)",
+  "private": true,
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^16.9.0",
+    "@4players/odin-tokens": "file:../.."
+  }
+}
