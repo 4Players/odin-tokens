@@ -2,9 +2,9 @@ import { createServer, IncomingMessage, ServerResponse } from "http";
 import { URL } from "url";
 import { TokenGenerator } from "@4players/odin-tokens";
 
-// replace the apiKey with your own, if you want to generate tokens for testing purposes.
-const apiKey = "AcIbjUrHA8EV62TAGYcwDtHhQ8wN3lXmcKtFtN/SvdMA";
-const generator = new TokenGenerator(apiKey);
+// replace the accessKey with your own, if you want to generate tokens for testing purposes.
+const accessKey = "AcIbjUrHA8EV62TAGYcwDtHhQ8wN3lXmcKtFtN/SvdMA";
+const generator = new TokenGenerator(accessKey);
 
 const hostname = "0.0.0.0";
 const port = 8080;
