@@ -28,10 +28,10 @@ export function generateAccessKey(): string {
  * @returns a key-pair derived from the access key
  */
 export function loadAccessKey(accessKey: string): KeyPair {
-  if (!Base64.isValid(accessKey)) throw new Error("invalid api key");
+  if (!Base64.isValid(accessKey)) throw new Error("invalid access key");
   const bytes = Base64.toUint8Array(accessKey);
   if (bytes[0] !== 0x01 || bytes.length !== 33 || crc8(bytes.subarray(1)) !== 0)
-    throw new Error("invalid api key");
+    throw new Error("invalid access key");
   return nacl.sign.keyPair.fromSeed(bytes.subarray(1));
 }
 
