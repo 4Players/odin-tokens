@@ -1,6 +1,6 @@
 {
   "name": "@4players/odin-tokens",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A lightweight token generator for 4Players ODIN",
   "author": "Maximilian Münchow <maximilian.muenchow@4players.io> (https://www.4players.io)",
   "homepage": "https://www.4players.io",
@@ -8,14 +8,20 @@
     "type": "git",
     "url": "https://github.com/4Players/odin-tokens.git"
   },
+  "keywords": ["authentication", "odin", "sdk", "token", "voice", "voip"],
   "private": false,
   "license": "ISC",
-  "main": "lib/index.js",
-  "types": "lib/index.d.js",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm5/index.js",
+  "es2015": "./lib/esm/index.js",
+  "types": "./lib/index.d.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.esm5.json",
     "lint": "eslint",
     "test": "testyts"
+  },
+  "engines": {
+    "node": ">=12"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.33.0",

@@ -1,12 +1,17 @@
 {
     "compilerOptions": {
-        "target": "ES2015",
-        "module": "CommonJS",
-        "declaration": true,
+        "target": "esnext",
         "moduleResolution": "node",
-        "outDir": "./lib",
         "strict": true,
         "experimentalDecorators": true,
+        "noImplicitReturns": true,
+        "noEmit": true,
+        "declaration": true,
+        "declarationDir": "./lib",
+        "lib": [
+            "esnext",
+            "dom"
+        ],
     },
     "include": ["src"],
     "exclude": ["node_modules"]

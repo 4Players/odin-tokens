@@ -1,0 +1,11 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "target": "es5",
+        "module": "esnext",
+        "noEmit": false,
+        "importHelpers": true,
+        "downlevelIteration": true,
+        "outDir": "./lib/esm5"
+    }
+}
