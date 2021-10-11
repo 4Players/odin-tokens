@@ -17,7 +17,7 @@ export function generateAccessKey(): string {
   // seed is 32byte long, 31 of them are random.
   key.set(nacl.randomBytes(31), 1);
   // and the last one is a checksum.
-  key[31] = crc8(key.subarray(1, 31));
+  key[32] = crc8(key.subarray(1, 31));
   return Base64.fromUint8Array(key);
 }
 
