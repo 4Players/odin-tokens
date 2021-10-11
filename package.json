@@ -1,6 +1,6 @@
 {
   "name": "@4players/odin-tokens",
-  "version": "0.0.6",
+  "version": "0.1.0",
   "description": "A lightweight token generator for 4Players ODIN",
   "author": "Maximilian Münchow <maximilian.muenchow@4players.io> (https://www.4players.io)",
   "homepage": "https://www.4players.io",
