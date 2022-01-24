@@ -1,11 +1,15 @@
 {
+    "root": true,
     "env": {
         "browser": true,
         "es2021": true,
         "node": true
     },
     "extends": [
-        "standard"
+        "semistandard"
+    ],
+    "ignorePatterns": [
+        "**/lib/*.ts"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -15,6 +19,5 @@
     "plugins": [
         "@typescript-eslint"
     ],
-    "rules": {
-    }
+    "rules": {}
 }

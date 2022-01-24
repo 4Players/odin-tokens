@@ -1,5 +1,5 @@
-import * as nacl from "tweetnacl";
-import { Base64 } from "js-base64";
+import * as nacl from 'tweetnacl';
+import { Base64 } from 'js-base64';
 
 export interface KeyPair {
   publicKey: Uint8Array;
@@ -11,7 +11,7 @@ export interface KeyPair {
  *
  * @returns an ODIN access key
  */
-export function generateAccessKey(): string {
+export function generateAccessKey (): string {
   const key = new Uint8Array(33);
   key[0] = 0x01;
   // seed is 32byte long, 31 of them are random.
@@ -27,11 +27,16 @@ export function generateAccessKey(): string {
  * @param accessKey an ODIN access key
  * @returns a key-pair derived from the access key
  */
-export function loadAccessKey(accessKey: string): KeyPair {
-  if (!Base64.isValid(accessKey)) throw new Error("invalid access key");
+export function loadAccessKey (accessKey: string): KeyPair {
+  if (!Base64.isValid(accessKey)) throw new Error('invalid access key');
   const bytes = Base64.toUint8Array(accessKey);
-  if (bytes[0] !== 0x01 || bytes.length !== 33 || crc8(bytes.subarray(1)) !== 0)
-    throw new Error("invalid access key");
+  if (
+    bytes[0] !== 0x01 ||
+    bytes.length !== 33 ||
+    crc8(bytes.subarray(1)) !== 0
+  ) {
+    throw new Error('invalid access key');
+  }
   return nacl.sign.keyPair.fromSeed(bytes.subarray(1));
 }
 
@@ -41,7 +46,7 @@ export function loadAccessKey(accessKey: string): KeyPair {
  * @param publicKey a public-key from an ODIN access key
  * @returns a key-id
  */
-export function getKeyId(publicKey: Uint8Array): string {
+export function getKeyId (publicKey: Uint8Array): string {
   const hash = nacl.hash(publicKey);
   const result = new Uint8Array(9);
   result[0] = 0x01;
@@ -57,7 +62,7 @@ export interface TokenOptions {
   /** set the customer identification */
   customer?: string;
   /** restrict who can accept the token */
-  audience?: "gateway" | "sfu";
+  audience?: 'gateway' | 'sfu';
   /** how long the token remains valid */
   lifetime?: number;
 }
@@ -83,9 +88,9 @@ export class TokenGenerator {
    */
   constructor(keyPair: KeyPair);
 
-  constructor(credentials: string | KeyPair) {
+  constructor (credentials: string | KeyPair) {
     const { publicKey, secretKey } =
-      typeof credentials === "string"
+      typeof credentials === 'string'
         ? loadAccessKey(credentials)
         : credentials;
     this.keyId = getKeyId(publicKey);
@@ -100,19 +105,19 @@ export class TokenGenerator {
    * @param options additional options
    * @returns a new token
    */
-  createToken(roomId: string, userId: string, options?: TokenOptions): string {
+  createToken (roomId: string, userId: string, options?: TokenOptions): string {
     const nbf = Math.floor(Date.now() / 1000); /* now in unix-time */
     const claimSet = {
       rid: roomId,
       uid: userId,
       cid: options?.customer,
-      sub: "connect",
+      sub: 'connect',
       aud: options?.audience,
       exp: nbf + (options?.lifetime ?? 300) /* 5min default */,
-      nbf,
+      nbf
     };
 
-    const header = { alg: "EdDSA", kid: this.keyId };
+    const header = { alg: 'EdDSA', kid: this.keyId };
     const body = `${base64EncodeObject(header)}.${base64EncodeObject(
       claimSet
     )}`;
@@ -123,12 +128,12 @@ export class TokenGenerator {
   }
 }
 
-function crc8(data: Uint8Array): number {
+function crc8 (data: Uint8Array): number {
   let crc = 0xff;
   for (let i = 0; i < data.length; i++) {
     crc ^= data[i];
     for (let j = 0; j < 8; j++) {
-      if ((crc & 0x80) != 0) crc = (crc << 1) ^ 0x31;
+      if ((crc & 0x80) !== 0) crc = (crc << 1) ^ 0x31;
       else crc <<= 1;
     }
     crc = 0xff & crc;
@@ -136,6 +141,6 @@ function crc8(data: Uint8Array): number {
   return crc;
 }
 
-function base64EncodeObject(object: Object): string {
+function base64EncodeObject (object: Object): string {
   return Base64.encode(JSON.stringify(object), true);
 }
