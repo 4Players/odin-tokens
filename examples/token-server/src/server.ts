@@ -9,7 +9,7 @@ const generator = new TokenGenerator(accessKey);
 const hostname = '0.0.0.0';
 const port = 8080;
 
-function onRequest (req: IncomingMessage, res: ServerResponse): void {
+function onRequest(req: IncomingMessage, res: ServerResponse): void {
   const url = new URL(req.url ?? '/', `http://${req.headers.host ?? hostname}`);
   const roomId = url.pathname.substr(1) || 'default';
   const userId = url.searchParams.get('user_id') ?? 'unknown';
