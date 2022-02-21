@@ -1,6 +1,6 @@
 {
   "name": "@4players/odin-tokens",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A lightweight token generator for 4Players ODIN",
   "author": "Maximilian Münchow <maximilian.muenchow@4players.io> (https://www.4players.io)",
   "homepage": "https://www.4players.io",
@@ -24,15 +24,15 @@
     "node": ">=12"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
     "eslint": "^7.32.0",
     "eslint-config-semistandard": "^16.0.0",
     "eslint-plugin-import": "^2.25.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.2.0",
     "testyts": "^1.5.0",
-    "ts-node": "^10.4.0",
+    "ts-node": "^10.5.0",
     "typescript": "^4.5.0"
   },
   "dependencies": {

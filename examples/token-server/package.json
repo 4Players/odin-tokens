@@ -1,6 +1,6 @@
 {
   "name": "example-token-server",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "scripts": {
     "build": "tsc",
     "prestart": "npm run build",
@@ -10,7 +10,7 @@
   "private": true,
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^16.10.0",
-    "@4players/odin-tokens": "file:../.."
+    "@4players/odin-tokens": "^1.0.0",
+    "@types/node": "^16.10.0"
   }
 }
