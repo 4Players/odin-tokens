@@ -91,17 +91,17 @@ export class TokenGenerator {
   }
 
   /**
-   * Create a new token.
+   * Create a new token to join the specified room(s).
    *
-   * @param roomId id of the ODIN room to join
+   * @param roomId id(s) of the ODIN room to join
    * @param userId the user-id of the client in the ODIN room
    * @param options additional options
    * @returns a new token
    */
-  createToken(roomId: string, userId: string, options?: TokenOptions): string {
+  createToken(roomId: string | string[], userId: string, options?: TokenOptions): string {
     const nbf = Math.floor(Date.now() / 1000); /* now in unix-time */
-    const claimSet = {
-      rid: roomId,
+    const ridsClaims = typeof roomId === 'string' ? { rid: roomId } : { rids: roomId };
+    const moreClaims = {
       uid: userId,
       cid: options?.customer,
       sub: 'connect',
@@ -111,7 +111,8 @@ export class TokenGenerator {
     };
 
     const header = { alg: 'EdDSA', kid: this.keyId };
-    const body = `${base64EncodeObject(header)}.${base64EncodeObject(claimSet)}`;
+    const claims = Object.assign(ridsClaims, moreClaims);
+    const body = `${base64EncodeObject(header)}.${base64EncodeObject(claims)}`;
     const message = new TextEncoder().encode(body);
     const signature = nacl.sign.detached(message, this.secretKey);
 
