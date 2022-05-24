@@ -53,4 +53,14 @@ export class AccessKeyTestSuite {
       'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWQiOiJ0ZXN0LXJvb20iLCJ1aWQiOiJ0ZXN0LXVzZXIiLCJzdWIiOiJjb25uZWN0IiwiZXhwIjozMjUwMzY4MDMwMCwibmJmIjozMjUwMzY4MDAwMH0.HZHRcFZ-DsdTTWE0gqbG1ZAc1YFb81OiGGwB5MeD2zA87TOKzCCpsxPIfUF4XHBVx50xvZxEM3nsrzMBS1ScCA'
     );
   }
+
+  @Test()
+  generateMultiRoomToken() {
+    const generator = new TokenGenerator(TestData.accessKey);
+    const token = generator.createToken(['test-room1', 'test-room2'], 'test-user');
+    expect.toBeEqual(
+      token,
+      'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWRzIjpbInRlc3Qtcm9vbTEiLCJ0ZXN0LXJvb20yIl0sInVpZCI6InRlc3QtdXNlciIsInN1YiI6ImNvbm5lY3QiLCJleHAiOjMyNTAzNjgwMzAwLCJuYmYiOjMyNTAzNjgwMDAwfQ.TZ9oqNlwypWwl5RH7SHhQU-ZAgokFJvZLuU_yVEA8gkF27kb9LcEiDAXUCdLquJh4wOGNGJFIocoT-ZZbgJEAg'
+    );
+  }
 }
