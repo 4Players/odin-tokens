@@ -100,8 +100,8 @@ export class TokenGenerator {
    */
   createToken(roomId: string | string[], userId: string, options?: TokenOptions): string {
     const nbf = Math.floor(Date.now() / 1000); /* now in unix-time */
-    const ridsClaims = typeof roomId === 'string' ? { rid: roomId } : { rids: roomId };
-    const moreClaims = {
+    const claims = {
+      rid: roomId,
       uid: userId,
       cid: options?.customer,
       sub: 'connect',
@@ -111,7 +111,6 @@ export class TokenGenerator {
     };
 
     const header = { alg: 'EdDSA', kid: this.keyId };
-    const claims = Object.assign(ridsClaims, moreClaims);
     const body = `${base64EncodeObject(header)}.${base64EncodeObject(claims)}`;
     const message = new TextEncoder().encode(body);
     const signature = nacl.sign.detached(message, this.secretKey);
