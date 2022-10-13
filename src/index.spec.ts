@@ -60,7 +60,7 @@ export class AccessKeyTestSuite {
     const token = generator.createToken(['test-room1', 'test-room2'], 'test-user');
     expect.toBeEqual(
       token,
-      'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWRzIjpbInRlc3Qtcm9vbTEiLCJ0ZXN0LXJvb20yIl0sInVpZCI6InRlc3QtdXNlciIsInN1YiI6ImNvbm5lY3QiLCJleHAiOjMyNTAzNjgwMzAwLCJuYmYiOjMyNTAzNjgwMDAwfQ.TZ9oqNlwypWwl5RH7SHhQU-ZAgokFJvZLuU_yVEA8gkF27kb9LcEiDAXUCdLquJh4wOGNGJFIocoT-ZZbgJEAg'
+      'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWQiOlsidGVzdC1yb29tMSIsInRlc3Qtcm9vbTIiXSwidWlkIjoidGVzdC11c2VyIiwic3ViIjoiY29ubmVjdCIsImV4cCI6MzI1MDM2ODAzMDAsIm5iZiI6MzI1MDM2ODAwMDB9.j4wtRREurbbzTlShx6Inc_H6bAyj8omSZ3Tcj59s0jQk83TOQiM59GEIsCobs-nGSz-PkHlFJB-TIS8_j1rLBQ'
     );
   }
 }
