@@ -63,4 +63,14 @@ export class AccessKeyTestSuite {
       'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWQiOlsidGVzdC1yb29tMSIsInRlc3Qtcm9vbTIiXSwidWlkIjoidGVzdC11c2VyIiwic3ViIjoiY29ubmVjdCIsImV4cCI6MzI1MDM2ODAzMDAsIm5iZiI6MzI1MDM2ODAwMDB9.j4wtRREurbbzTlShx6Inc_H6bAyj8omSZ3Tcj59s0jQk83TOQiM59GEIsCobs-nGSz-PkHlFJB-TIS8_j1rLBQ'
     );
   }
+
+  @Test()
+  generateSingleServerToken() {
+    const generator = new TokenGenerator(TestData.accessKey);
+    const token = generator.createToken('test-room', 'test-user', { audience: 'sfu' });
+    expect.toBeEqual(
+      token,
+      'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWQiOiJ0ZXN0LXJvb20iLCJ1aWQiOiJ0ZXN0LXVzZXIiLCJzdWIiOiJsb2dpbiIsImF1ZCI6InNmdSIsImV4cCI6MzI1MDM2ODAzMDAsIm5iZiI6MzI1MDM2ODAwMDB9.B-DFiedG7UDHgGOVHafuQR2nNsDtUyk7Ju1qPkm1ViXh0PxB9HeQb4rvuz5DntEobNAiAqbCJIZbygz9pAAwBQ'
+    );
+  }
 }

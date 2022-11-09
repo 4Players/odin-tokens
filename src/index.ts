@@ -104,7 +104,7 @@ export class TokenGenerator {
       rid: roomId,
       uid: userId,
       cid: options?.customer,
-      sub: 'connect',
+      sub: options?.audience === 'sfu' ? 'login' : 'connect',
       aud: options?.audience,
       exp: nbf + (options?.lifetime ?? 300) /* 5min default */,
       nbf,
