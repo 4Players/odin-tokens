@@ -59,6 +59,8 @@ export interface TokenOptions {
   customer?: string;
   /** restrict who can accept the token */
   audience?: 'gateway' | 'sfu';
+  /** restrict the purpose of the token */
+  subject?: string | string[];
   /** how long the token remains valid */
   lifetime?: number;
 }
@@ -104,7 +106,7 @@ export class TokenGenerator {
       rid: roomId,
       uid: userId,
       cid: options?.customer,
-      sub: options?.audience === 'sfu' ? 'login' : 'connect',
+      sub: options?.audience === 'sfu' ? 'login' : options?.subject,
       aud: options?.audience,
       exp: nbf + (options?.lifetime ?? 300) /* 5min default */,
       nbf,
