@@ -50,7 +50,7 @@ export class AccessKeyTestSuite {
     const token = generator.createToken('test-room', 'test-user');
     expect.toBeEqual(
       token,
-      'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWQiOiJ0ZXN0LXJvb20iLCJ1aWQiOiJ0ZXN0LXVzZXIiLCJleHAiOjMyNTAzNjgwMzAwLCJuYmYiOjMyNTAzNjgwMDAwfQ.It7HovO0Xg3da3B9DaHn2dEP55j3zPDF4L95r-39Mmc7h6mw9qgXfy5xp2sqCn-HwWtUWFygkIJbfgVA1kYtBA'
+      'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWQiOiJ0ZXN0LXJvb20iLCJ1aWQiOiJ0ZXN0LXVzZXIiLCJzdWIiOiJjb25uZWN0IiwiZXhwIjozMjUwMzY4MDMwMCwibmJmIjozMjUwMzY4MDAwMH0.HZHRcFZ-DsdTTWE0gqbG1ZAc1YFb81OiGGwB5MeD2zA87TOKzCCpsxPIfUF4XHBVx50xvZxEM3nsrzMBS1ScCA'
     );
   }
 
@@ -60,7 +60,7 @@ export class AccessKeyTestSuite {
     const token = generator.createToken(['test-room1', 'test-room2'], 'test-user');
     expect.toBeEqual(
       token,
-      'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWQiOlsidGVzdC1yb29tMSIsInRlc3Qtcm9vbTIiXSwidWlkIjoidGVzdC11c2VyIiwiZXhwIjozMjUwMzY4MDMwMCwibmJmIjozMjUwMzY4MDAwMH0.KRGQX7PVTKizhE97lMQn60URpcilxTUldV_vw-UqYEDH88T3_Ze-2VrgN9hOFpXZ37Rgt0hWYK21PGcYCVJ3Bw'
+      'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWQiOlsidGVzdC1yb29tMSIsInRlc3Qtcm9vbTIiXSwidWlkIjoidGVzdC11c2VyIiwic3ViIjoiY29ubmVjdCIsImV4cCI6MzI1MDM2ODAzMDAsIm5iZiI6MzI1MDM2ODAwMDB9.j4wtRREurbbzTlShx6Inc_H6bAyj8omSZ3Tcj59s0jQk83TOQiM59GEIsCobs-nGSz-PkHlFJB-TIS8_j1rLBQ'
     );
   }
 
@@ -70,7 +70,7 @@ export class AccessKeyTestSuite {
     const token = generator.createToken('test-room', 'test-user', { audience: 'sfu' });
     expect.toBeEqual(
       token,
-      'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWQiOiJ0ZXN0LXJvb20iLCJ1aWQiOiJ0ZXN0LXVzZXIiLCJzdWIiOiJsb2dpbiIsImF1ZCI6InNmdSIsImV4cCI6MzI1MDM2ODAzMDAsIm5iZiI6MzI1MDM2ODAwMDB9.B-DFiedG7UDHgGOVHafuQR2nNsDtUyk7Ju1qPkm1ViXh0PxB9HeQb4rvuz5DntEobNAiAqbCJIZbygz9pAAwBQ'
+      'eyJhbGciOiJFZERTQSIsImtpZCI6IkFRN2FWbUsrcEkxbCJ9.eyJyaWQiOiJ0ZXN0LXJvb20iLCJ1aWQiOiJ0ZXN0LXVzZXIiLCJzdWIiOiJjb25uZWN0IiwiYXVkIjoic2Z1IiwiZXhwIjozMjUwMzY4MDMwMCwibmJmIjozMjUwMzY4MDAwMH0.Lj8BCFLUeH9aAV9SY-JUpNllGahN2gjSIMgepfCV2SyHAkZn7bdDxQeV_bOVWmzZN9zds6nOSbDqdJAECHbaCg'
     );
   }
 

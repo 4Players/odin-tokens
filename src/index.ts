@@ -7,25 +7,27 @@ export interface KeyPair {
 }
 
 /**
- * Generates a new ODIN access key.
+ * Generates a new ODIN access, which is a 44 character long Base64-String that consists of an
+ * internal version number, a set of random bytes and a checksum.
  *
- * @returns an ODIN access key
+ * @returns The new ODIN access key.
  */
 export function generateAccessKey(): string {
   const key = new Uint8Array(33);
+  // version
   key[0] = 0x01;
-  // seed is 32byte long, 31 of them are random.
+  // seed
   key.set(nacl.randomBytes(31), 1);
-  // and the last one is a checksum.
+  // checksum
   key[32] = crc8(key.subarray(1, 32));
   return Base64.fromUint8Array(key);
 }
 
 /**
- * Validates and loads an ODIN access key.
+ * Validates an ODIN access key and loads its key pair.
  *
- * @param accessKey an ODIN access key
- * @returns a key-pair derived from the access key
+ * @param accessKey - The ODIN access key as a Base64-encoded string from which to load a key pair.
+ * @returns The loaded key pair.
  */
 export function loadAccessKey(accessKey: string): KeyPair {
   if (!Base64.isValid(accessKey)) throw new Error('invalid access key');
@@ -37,10 +39,10 @@ export function loadAccessKey(accessKey: string): KeyPair {
 }
 
 /**
- * Derives the key-id from a public-key.
+ * Generates a key ID from a given public key.
  *
- * @param publicKey a public-key from an ODIN access key
- * @returns a key-id
+ * @param publicKey - The public key as a Uint8Array from which to generate a key ID.
+ * @returns The generated key ID as a Base64-encoded string.
  */
 export function getKeyId(publicKey: Uint8Array): string {
   const hash = nacl.hash(publicKey);
@@ -93,12 +95,12 @@ export class TokenGenerator {
   }
 
   /**
-   * Create a new token to join the specified room(s).
+   * Creates a signed JWT to grant access to an ODIN room using the EdDSA signature scheme.
    *
-   * @param roomId id(s) of the ODIN room to join
-   * @param userId the user-id of the client in the ODIN room
-   * @param options additional options
-   * @returns a new token
+   * @param roomId - The room ID(s) for which the token is being generated.
+   * @param userId - The ID of the user for whom the token is being generated.
+   * @param options - An optional object containing additional token parameters.
+   * @returns A signed token string.
    */
   createToken(roomId: string | string[], userId: string, options?: TokenOptions): string {
     const nbf = Math.floor(Date.now() / 1000); /* now in unix-time */
@@ -106,9 +108,9 @@ export class TokenGenerator {
       rid: roomId,
       uid: userId,
       cid: options?.customer,
-      sub: options?.audience === 'sfu' ? 'login' : options?.subject,
+      sub: options?.subject ?? 'connect',
       aud: options?.audience,
-      exp: nbf + (options?.lifetime ?? 300) /* 5min default */,
+      exp: nbf + (options?.lifetime ?? 300),
       nbf,
     };
 
@@ -121,6 +123,12 @@ export class TokenGenerator {
   }
 }
 
+/**
+ * Calculates the 8-bit Cyclic Redundancy Check (CRC-8) of a given data array.
+ *
+ * @param data - The input data as a Uint8Array to compute the CRC for.
+ * @returns The computed CRC-8 of the input data as a number.
+ */
 function crc8(data: Uint8Array): number {
   let crc = 0xff;
   for (let i = 0; i < data.length; i++) {
@@ -134,6 +142,12 @@ function crc8(data: Uint8Array): number {
   return crc;
 }
 
+/**
+ * Converts a JavaScript object into a Base64-encoded string representation.
+ *
+ * @param object - The JavaScript object to be encoded into a Base64 string.
+ * @returns The Base64-encoded string representation of the input object.
+ */
 function base64EncodeObject(object: Object): string {
   return Base64.encode(JSON.stringify(object), true);
 }
