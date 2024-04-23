@@ -32,7 +32,11 @@ export function generateAccessKey(): string {
 export function loadAccessKey(accessKey: string): KeyPair {
   if (!Base64.isValid(accessKey)) throw new Error('invalid access key');
   const bytes = Base64.toUint8Array(accessKey);
-  if (bytes[0] !== 0x01 || bytes.length !== 33 || crc8(bytes.subarray(1)) !== 0) {
+  if (
+    bytes[0] !== 0x01 ||
+    bytes.length !== 33 ||
+    crc8(bytes.subarray(1)) !== 0
+  ) {
     throw new Error('invalid access key');
   }
   return nacl.sign.keyPair.fromSeed(bytes.subarray(1));
@@ -63,6 +67,10 @@ export interface TokenOptions {
   audience?: 'gateway' | 'sfu';
   /** restrict the purpose of the token */
   subject?: string | string[];
+  /** set the specific server address to use */
+  address?: string;
+  /** set the specific upstream address to use */
+  upstream?: string;
   /** how long the token remains valid */
   lifetime?: number;
 }
@@ -89,7 +97,10 @@ export class TokenGenerator {
   constructor(keyPair: KeyPair);
 
   constructor(credentials: string | KeyPair) {
-    const { publicKey, secretKey } = typeof credentials === 'string' ? loadAccessKey(credentials) : credentials;
+    const { publicKey, secretKey } =
+      typeof credentials === 'string'
+        ? loadAccessKey(credentials)
+        : credentials;
     this.keyId = getKeyId(publicKey);
     this.secretKey = secretKey;
   }
@@ -102,11 +113,17 @@ export class TokenGenerator {
    * @param options - An optional object containing additional token parameters.
    * @returns A signed token string.
    */
-  createToken(roomId: string | string[], userId: string, options?: TokenOptions): string {
+  createToken(
+    roomId: string | string[],
+    userId: string,
+    options?: TokenOptions
+  ): string {
     const nbf = Math.floor(Date.now() / 1000); /* now in unix-time */
     const claims = {
       rid: roomId,
       uid: userId,
+      adr: options?.address,
+      ups: options?.upstream,
       cid: options?.customer,
       sub: options?.subject ?? 'connect',
       aud: options?.audience,
