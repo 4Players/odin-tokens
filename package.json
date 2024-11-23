@@ -1,6 +1,6 @@
 {
   "name": "@4players/odin-tokens",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A lightweight token generator for 4Players ODIN",
   "author": "Maximilian Münchow <maximilian.muenchow@4players.io> (https://www.4players.io)",
   "homepage": "https://www.4players.io",
@@ -14,7 +14,7 @@
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm5/index.js",
   "es2015": "./lib/esm/index.js",
-  "types": "./lib/index.d.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "build": "tsc -b ./tsconfig.cjs.json ./tsconfig.esm.json ./tsconfig.esm5.json",
     "lint": "eslint . --ext .ts",
