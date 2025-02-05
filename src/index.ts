@@ -69,10 +69,14 @@ export interface TokenOptions {
   subject?: string | string[];
   /** set the specific server address to use */
   address?: string;
+  /** set optional tags to assign to the client */
+  tags?: string[];
   /** set the specific upstream address to use */
   upstream?: string;
   /** how long the token remains valid */
   lifetime?: number;
+  /** custom properties to store */
+  internal?: Record<string, unknown>;
 }
 
 /**
@@ -123,12 +127,15 @@ export class TokenGenerator {
       rid: roomId,
       uid: userId,
       adr: options?.address,
+      tgs: options?.tags,
       ups: options?.upstream,
       cid: options?.customer,
       sub: options?.subject ?? 'connect',
       aud: options?.audience,
       exp: nbf + (options?.lifetime ?? 300),
       nbf,
+      // internal use only
+      internal: options?.internal,
     };
 
     const header = { alg: 'EdDSA', kid: this.keyId };
