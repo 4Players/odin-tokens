@@ -4,28 +4,35 @@ stages:
   - test
   - deploy
 
-before_script:
-  - npm ci
-
-cache:
-  key: "${CI_COMMIT_REF_SLUG}"
-  paths:
-    - node_modules/
-
-test:eslint:
+test:lint:
   stage: test
   script:
-    - npm run lint
+    - deno lint
 
-test:testyts:
+test:format:
   stage: test
   script:
-    - npm run test
+    - deno fmt
+    - git status
+    - test -z "$(git status --porcelain)"
 
-publish:
+test:unittest:
+  stage: test
+  script:
+    - deno task test
+
+publish-jsr:
   stage: deploy
   when: manual
   script:
+    - deno publish --token "${JSR_AUTH_TOKEN}"
+
+publish-npm:
+  stage: deploy
+  when: manual
+  script:
+    - deno task build-npm
+    - cd dist
     - npm run build
     - echo '//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}' > .npmrc
     - npm publish

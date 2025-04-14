@@ -1,9 +1,0 @@
-.eslintrc.json
-.gitlab-ci.yml
-examples
-src
-testy.json
-tsconfig.cjs.json
-tsconfig.esm.json
-tsconfig.esm5.json
-tsconfig.json

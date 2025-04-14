@@ -1,10 +1,7 @@
-import * as nacl from 'tweetnacl';
-import { Base64 } from 'js-base64';
+import { decodeBase64, encodeBase64, encodeBase64Url } from "@std/encoding";
+import * as ed25119 from "@noble/ed25519";
 
-export interface KeyPair {
-  publicKey: Uint8Array;
-  secretKey: Uint8Array;
-}
+export type SecretKey = ed25119.Bytes;
 
 /**
  * Generates a new ODIN access, which is a 44 character long Base64-String that consists of an
@@ -17,10 +14,10 @@ export function generateAccessKey(): string {
   // version
   key[0] = 0x01;
   // seed
-  key.set(nacl.randomBytes(31), 1);
+  crypto.getRandomValues(key.subarray(1, 32));
   // checksum
   key[32] = crc8(key.subarray(1, 32));
-  return Base64.fromUint8Array(key);
+  return encodeBase64(key);
 }
 
 /**
@@ -29,17 +26,16 @@ export function generateAccessKey(): string {
  * @param accessKey - The ODIN access key as a Base64-encoded string from which to load a key pair.
  * @returns The loaded key pair.
  */
-export function loadAccessKey(accessKey: string): KeyPair {
-  if (!Base64.isValid(accessKey)) throw new Error('invalid access key');
-  const bytes = Base64.toUint8Array(accessKey);
+export function loadAccessKey(accessKey: string): Promise<SecretKey> {
+  const bytes = decodeBase64(accessKey);
   if (
     bytes[0] !== 0x01 ||
     bytes.length !== 33 ||
     crc8(bytes.subarray(1)) !== 0
   ) {
-    throw new Error('invalid access key');
+    throw new TypeError("invalid access key");
   }
-  return nacl.sign.keyPair.fromSeed(bytes.subarray(1));
+  return Promise.resolve(bytes.subarray(1));
 }
 
 /**
@@ -48,8 +44,9 @@ export function loadAccessKey(accessKey: string): KeyPair {
  * @param publicKey - The public key as a Uint8Array from which to generate a key ID.
  * @returns The generated key ID as a Base64-encoded string.
  */
-export function getKeyId(publicKey: Uint8Array): string {
-  const hash = nacl.hash(publicKey);
+export async function getKeyId(key: SecretKey): Promise<string> {
+  const publicKey = await ed25119.getPublicKeyAsync(key);
+  const hash = await ed25119.etc.sha512Async(publicKey);
   const result = new Uint8Array(9);
   result[0] = 0x01;
   for (let i = 0, x = 0; i < 8; i++) {
@@ -57,14 +54,14 @@ export function getKeyId(publicKey: Uint8Array): string {
       result[1 + j] ^= hash[x];
     }
   }
-  return Base64.fromUint8Array(result);
+  return encodeBase64(result);
 }
 
 export interface TokenOptions {
   /** set the customer identification */
   customer?: string;
   /** restrict who can accept the token */
-  audience?: 'gateway' | 'sfu';
+  audience?: "gateway" | "sfu";
   /** restrict the purpose of the token */
   subject?: string | string[];
   /** set the specific server address to use */
@@ -83,8 +80,8 @@ export interface TokenOptions {
  * Generates tokens that can be used to access the ODIN network.
  */
 export class TokenGenerator {
-  private keyId: string;
-  private secretKey: Uint8Array;
+  private readonly keyId: Promise<string>;
+  private readonly secretKey: Promise<SecretKey>;
 
   /**
    * Creates a TokenGenerator.
@@ -98,15 +95,15 @@ export class TokenGenerator {
    *
    * @param keyPair used to sign the generated tokens
    */
-  constructor(keyPair: KeyPair);
+  constructor(keyPair: SecretKey);
 
-  constructor(credentials: string | KeyPair) {
-    const { publicKey, secretKey } =
-      typeof credentials === 'string'
-        ? loadAccessKey(credentials)
-        : credentials;
-    this.keyId = getKeyId(publicKey);
-    this.secretKey = secretKey;
+  constructor(credentials: string | SecretKey) {
+    const secretKey = this.secretKey =
+      (async () =>
+        typeof credentials === "string"
+          ? await loadAccessKey(credentials)
+          : credentials)();
+    this.keyId = (async () => getKeyId(await secretKey))();
   }
 
   /**
@@ -117,11 +114,11 @@ export class TokenGenerator {
    * @param options - An optional object containing additional token parameters.
    * @returns A signed token string.
    */
-  createToken(
+  async createToken(
     roomId: string | string[],
     userId: string,
-    options?: TokenOptions
-  ): string {
+    options?: TokenOptions,
+  ): Promise<string> {
     const nbf = Math.floor(Date.now() / 1000); /* now in unix-time */
     const claims = {
       rid: roomId,
@@ -130,7 +127,7 @@ export class TokenGenerator {
       tgs: options?.tags,
       ups: options?.upstream,
       cid: options?.customer,
-      sub: options?.subject ?? 'connect',
+      sub: options?.subject ?? "connect",
       aud: options?.audience,
       exp: nbf + (options?.lifetime ?? 300),
       nbf,
@@ -138,12 +135,12 @@ export class TokenGenerator {
       internal: options?.internal,
     };
 
-    const header = { alg: 'EdDSA', kid: this.keyId };
+    const header = { alg: "EdDSA", kid: await this.keyId };
     const body = `${base64EncodeObject(header)}.${base64EncodeObject(claims)}`;
     const message = new TextEncoder().encode(body);
-    const signature = nacl.sign.detached(message, this.secretKey);
+    const signature = await ed25119.signAsync(message, await this.secretKey);
 
-    return `${body}.${Base64.fromUint8Array(signature, true)}`;
+    return `${body}.${encodeBase64Url(signature)}`;
   }
 }
 
@@ -172,6 +169,6 @@ function crc8(data: Uint8Array): number {
  * @param object - The JavaScript object to be encoded into a Base64 string.
  * @returns The Base64-encoded string representation of the input object.
  */
-function base64EncodeObject(object: Object): string {
-  return Base64.encode(JSON.stringify(object), true);
+function base64EncodeObject(object: unknown): string {
+  return encodeBase64Url(JSON.stringify(object));
 }

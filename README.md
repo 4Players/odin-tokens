@@ -4,9 +4,11 @@
 [![npm](https://img.shields.io/npm/l/@4players/odin-tokens.svg)][license-url]
 [![npm](https://img.shields.io/npm/dm/@4players/odin-tokens.svg)][npm-badge-url]
 
-This is a lightweight module to generate API keys and tokens used by 4Players ODIN.
+This is a lightweight module to generate API keys and tokens used by 4Players
+ODIN.
 
-4Players ODIN is a cross-platform software development kit (SDK) that enables developers to integrate voice and video chat technology into multiplayer games.
+4Players ODIN is a cross-platform software development kit (SDK) that enables
+developers to integrate voice and video chat technology into multiplayer games.
 
 ## Flowchart
 
@@ -25,7 +27,7 @@ import { TokenGenerator } from "@4players/odin-tokens";
 
 const accessKey = "<YOUR API KEY HERE>";
 const generator = new TokenGenerator(accessKey);
-const token = generator.createToken("my room", "john doe");
+const token = await generator.createToken("my room", "john doe");
 
 console.log(`generated a new token: ${token}`);
 ```
