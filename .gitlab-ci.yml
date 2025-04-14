@@ -20,7 +20,7 @@ test:lint:
 test:format:
   stage: test
   script:
-    - deno fmt --check
+    - deno fmt --check --ignore=.cache
 
 test:unittest:
   stage: test
