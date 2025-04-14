@@ -15,7 +15,7 @@ cache:
 test:lint:
   stage: test
   script:
-    - deno lint
+    - deno lint --ignore=.cache
 
 test:format:
   stage: test
