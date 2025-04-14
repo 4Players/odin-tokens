@@ -4,8 +4,8 @@ stages:
   - test
   - deploy
 
-env:
-  DENO_DIR: deno
+variables:
+  DENO_DIR: .cache/deno
 
 cache:
   key: "${CI_COMMIT_REF_SLUG}"
