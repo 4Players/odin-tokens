@@ -1,6 +1,7 @@
 .DS_Store
 .npmrc
 .vscode
+.cache/
 dist
 lib
 node_modules
