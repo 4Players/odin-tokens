@@ -4,6 +4,14 @@ stages:
   - test
   - deploy
 
+env:
+  DENO_DIR: deno
+
+cache:
+  key: "${CI_COMMIT_REF_SLUG}"
+  paths:
+    - ${DENO_DIR}
+
 test:lint:
   stage: test
   script:
@@ -12,9 +20,7 @@ test:lint:
 test:format:
   stage: test
   script:
-    - deno fmt
-    - git status
-    - test -z "$(git status --porcelain)"
+    - deno fmt --check
 
 test:unittest:
   stage: test
