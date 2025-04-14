@@ -39,6 +39,5 @@ publish-npm:
   script:
     - deno task build-npm
     - cd dist
-    - npm run build
     - echo '//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}' > .npmrc
     - npm publish
