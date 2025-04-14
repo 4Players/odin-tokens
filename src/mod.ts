@@ -1,6 +1,9 @@
 import { decodeBase64, encodeBase64, encodeBase64Url } from "@std/encoding";
 import * as ed25119 from "@noble/ed25519";
 
+/**
+ * Key used to sign ODIN-Tokens.
+ */
 export type SecretKey = ed25119.Bytes;
 
 /**
@@ -57,6 +60,7 @@ export async function getKeyId(key: SecretKey): Promise<string> {
   return encodeBase64(result);
 }
 
+/** Additional fields that can be set inside a Token  */
 export interface TokenOptions {
   /** set the customer identification */
   customer?: string;
