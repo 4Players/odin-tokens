@@ -42,9 +42,9 @@ export function loadAccessKey(accessKey: string): Promise<SecretKey> {
 }
 
 /**
- * Generates a key ID from a given public key.
+ * Generates a key ID from a given secret key.
  *
- * @param publicKey - The public key as a Uint8Array from which to generate a key ID.
+ * @param key - The key from which to generate a key ID.
  * @returns The generated key ID as a Base64-encoded string.
  */
 export async function getKeyId(key: SecretKey): Promise<string> {
@@ -58,6 +58,17 @@ export async function getKeyId(key: SecretKey): Promise<string> {
     }
   }
   return encodeBase64(result);
+}
+
+/**
+ * Exports the public key from a given secret key.
+ * 
+ * @param key The secret key
+ * @returns The public key as Base64-Uri-encoded string.
+ */
+export async function getPublicKey(key: SecretKey): Promise<string> {
+  const publicKey = await ed25119.getPublicKeyAsync(key);
+  return encodeBase64Url(publicKey);
 }
 
 /** Additional fields that can be set inside a Token  */
@@ -97,9 +108,9 @@ export class TokenGenerator {
   /**
    * Creates a TokenGenerator.
    *
-   * @param keyPair used to sign the generated tokens
+   * @param key used to sign the generated tokens
    */
-  constructor(keyPair: SecretKey);
+  constructor(key: SecretKey);
 
   constructor(credentials: string | SecretKey) {
     const secretKey = this.secretKey =
