@@ -105,5 +105,10 @@ await Deno.writeTextFile(
     2,
   ),
 );
-await Deno.copyFileSync(`${rootDir}/README.md`, `${destination}/README.md`);
-await Deno.copyFileSync(`${rootDir}/LICENSE`, `${destination}/LICENSE`);
+
+///
+/// Copy miscellaneous project files
+///
+
+await Deno.copyFile(`${rootDir}/README.md`, `${destination}/README.md`);
+await Deno.copyFile(`${rootDir}/LICENSE`, `${destination}/LICENSE`);
