@@ -62,7 +62,7 @@ export async function getKeyId(key: SecretKey): Promise<string> {
 
 /**
  * Exports the public key from a given secret key.
- * 
+ *
  * @param key The secret key
  * @returns The public key as Base64-Uri-encoded string.
  */
