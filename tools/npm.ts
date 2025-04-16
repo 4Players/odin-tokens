@@ -61,7 +61,7 @@ ts.createProgram(files, options).emit(undefined, (fileName, data) => {
 
 function asNodeDependency(importString: string): Record<string, string> {
   const match = importString.match(
-    /^(?:\w+:)?(?<packageName>(?:@\w+\/)\w+)(?:@(?<version>.*))$/,
+    /^(?:\w+:)?(?<packageName>(?:@\w+\/)?\w+)(?:@(?<version>.*))$/,
   );
   assertNotEquals(match, null);
   const packageName = match!.groups!["packageName"];
