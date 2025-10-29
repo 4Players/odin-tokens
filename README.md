@@ -4,11 +4,9 @@
 [![npm](https://img.shields.io/npm/l/@4players/odin-tokens.svg)][license-url]
 [![npm](https://img.shields.io/npm/dm/@4players/odin-tokens.svg)][npm-badge-url]
 
-This is a lightweight module to generate API keys and tokens used by 4Players
-ODIN.
+This is a lightweight module to generate API keys and tokens used by [ODIN Voice](https://odin.4players.io/voice-chat/) by [4Players](https://www.4players.io/company/about_us/).
 
-4Players ODIN is a cross-platform software development kit (SDK) that enables
-developers to integrate voice and video chat technology into multiplayer games.
+ODIN Voice is a cross-platform software development kit (SDK) that enables developers to integrate voice and video chat technology into multiplayer games. Check out our full [online documentation](https://docs.4players.io/voice/).
 
 ## Flowchart
 
